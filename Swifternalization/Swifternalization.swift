@@ -48,7 +48,11 @@ final public class Swifternalization {
     
     :param: bundle A bundle when expressions.json and other files are located.
     */
-    public class func configure(_ bundle: Bundle = Bundle.main) {
+  
+    private static var preferredLanguage : String!
+  
+    public class func configure(withPreferredLanguage preferredLanguage: String, _ bundle: Bundle = Bundle.main) {
+        self.preferredLanguage = preferredLanguage
         sharedInstance.load(bundle)
     }
     
@@ -58,7 +62,7 @@ final public class Swifternalization {
      */
     private class func configureIfNeeded(_ bundle: Bundle = Bundle.main) {
         if sharedInstance.configured == false {
-            configure(bundle)
+            configure(withPreferredLanguage: self.preferredLanguage, bundle)
         }
     }
     
@@ -192,6 +196,6 @@ final public class Swifternalization {
     */
     private func getPreferredLanguage(_ bundle: Bundle) -> CountryCode {
         // Get preferred language, the one which is set on user's device
-        return bundle.preferredLocalizations.first! as CountryCode
+        return Swifternalization.preferredLanguage as CountryCode
     }
 }
